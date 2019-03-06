@@ -5,8 +5,7 @@ Plug 'morhetz/gruvbox'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 
-Plug 'Chiel92/vim-autoformat'
-Plug 'neomake/neomake'
+Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
@@ -36,7 +35,6 @@ nnoremap <leader>sv :so $MYVIMRC<cr>
 
 
 au BufEnter * call ncm2#enable_for_buffer()
-au BufWrite * :Autoformat
 
 " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
 inoremap <c-c> <ESC>
@@ -51,7 +49,8 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 set completeopt=noinsert,menuone,noselect
-call neomake#configure#automake('w')
+
+let g:ale_fix_on_save = 1
 
 nnoremap <c-p> :FZF<cr>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/flow-typed/*
