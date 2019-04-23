@@ -4,10 +4,12 @@ Plug 'tpope/vim-fugitive'
 Plug 'morhetz/gruvbox'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'leafgarland/typescript-vim'
 
 Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+let $FZF_DEFAULT_COMMAND="fd --type f"
 
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
@@ -23,7 +25,14 @@ filetype plugin indent on
 set background=dark
 color gruvbox
 
-let g:ale_fixers = {'javascript': ['prettier', 'eslint']}
+let g:ale_linters = {
+            \'javascript': ['eslint'],
+            \'python': ['flake8']
+            \}
+let g:ale_fixers = {
+            \'javascript': ['prettier', 'eslint'],
+            \'python': ['autopep8']
+            \}
 let g:ale_fix_on_save = 1
 
 set number relativenumber
@@ -97,12 +106,17 @@ let g:UltiSnipsRemoveSelectModeMappings = 0
 
 au FileType javascript call SetUpJavascript()
 function! SetUpJavascript()
-    setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab smartindent
+    setlocal sw=2 sts=2 ts=2 et si
+endfunction
+
+au FileType typescript call SetUpTypescript()
+function! SetUpTypescript()
+    setlocal sw=2 sts=2 ts=2 et si
 endfunction
 
 au FileType vim call SetUpVimScript()
 function! SetUpVimScript()
-    setlocal shiftwidth=4 softtabstop=4 tabstop=2 expandtab smartindent
+    setlocal sw=4 sts=4 ts=2 et si
 endfunction
 
 au FileType json call SetUpJson()
@@ -110,3 +124,7 @@ function! SetUpJson()
     setlocal sw=2 sts=2 ts=2 et si
 endfunction
 
+au FileType yaml call SetUpYaml()
+function! SetUpYaml()
+    setlocal sw=2 sts=2 ts=2 et si
+endfunction
