@@ -6,6 +6,8 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'leafgarland/typescript-vim'
 Plug 'ianks/vim-tsx'
+Plug 'scrooloose/nerdtree'
+Plug 'arcticicestudio/nord-vim'
 
 Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
@@ -24,7 +26,7 @@ call plug#end()
 filetype plugin indent on
 
 set background=dark
-color gruvbox
+color nord
 
 let g:ale_linters = {
             \'javascript': ['eslint'],
@@ -41,6 +43,8 @@ set number relativenumber
 
 nnoremap <leader>ev :e $MYVIMRC<cr>
 nnoremap <leader>sv :so $MYVIMRC<cr>
+nnoremap <leader>nt :NERDTreeToggle<CR>
+
 
 " ---------
 " Coc Stuff
@@ -150,4 +154,4 @@ endfunction
 au FileType sh call SetUpShell()
 function! SetUpShell()
     setlocal sw=4 sts=4 ts=4 et si
-endfunction
+endfunction'
