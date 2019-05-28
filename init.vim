@@ -5,6 +5,7 @@ Plug 'morhetz/gruvbox'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'leafgarland/typescript-vim'
+Plug 'ianks/vim-tsx'
 
 Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
@@ -30,6 +31,7 @@ let g:ale_linters = {
             \'python': ['flake8']
             \}
 let g:ale_fixers = {
+            \'typescript': ['prettier', 'eslint'],
             \'javascript': ['prettier', 'eslint'],
             \'python': ['autopep8']
             \}
@@ -69,6 +71,7 @@ function! s:check_back_space() abort
 endfunction
 
 " Remap keys for gotos
+nmap <leader>rn <Plug>(coc-rename)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
@@ -127,4 +130,24 @@ endfunction
 au FileType yaml call SetUpYaml()
 function! SetUpYaml()
     setlocal sw=2 sts=2 ts=2 et si
+endfunction
+
+au FileType c call SetUpC()
+function! SetUpC()
+    setlocal sw=4 sts=4 ts=4 et si
+endfunction
+
+au FileType rust call SetUpRust()
+function! SetUpRust()
+    setlocal sw=2 sts=2 ts=2 et si
+endfunction
+
+au FileType css call SetUpCss()
+function! SetUpCss()
+    setlocal sw=2 sts=2 ts=2 et si
+endfunction
+
+au FileType sh call SetUpShell()
+function! SetUpShell()
+    setlocal sw=4 sts=4 ts=4 et si
 endfunction
