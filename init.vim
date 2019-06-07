@@ -8,10 +8,15 @@ Plug 'leafgarland/typescript-vim'
 Plug 'ianks/vim-tsx'
 Plug 'scrooloose/nerdtree'
 Plug 'arcticicestudio/nord-vim'
+Plug 'posva/vim-vue'
+
+
+Plug 'editorconfig/editorconfig-vim'
 
 Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 let $FZF_DEFAULT_COMMAND="fd --type f"
 
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
@@ -44,6 +49,18 @@ set number relativenumber
 nnoremap <leader>ev :e $MYVIMRC<cr>
 nnoremap <leader>sv :so $MYVIMRC<cr>
 nnoremap <leader>nt :NERDTreeToggle<CR>
+
+" -------
+" Rg stuff
+" -------
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+nnoremap <leader>rg :Rg<CR>
 
 
 " ---------
