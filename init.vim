@@ -9,7 +9,11 @@ Plug 'ianks/vim-tsx'
 Plug 'scrooloose/nerdtree'
 Plug 'arcticicestudio/nord-vim'
 Plug 'posva/vim-vue'
+Plug 'mattn/emmet-vim'
+Plug 'luochen1990/rainbow'
+let g:rainbow_active = 1
 
+Plug 'airblade/vim-gitgutter'
 
 Plug 'editorconfig/editorconfig-vim'
 
@@ -46,7 +50,7 @@ let g:ale_fix_on_save = 1
 
 set number relativenumber
 
-nnoremap <leader>ev :e $MYVIMRC<cr>
+nnoremap <leader>ev :tabe $MYVIMRC<cr>
 nnoremap <leader>sv :so $MYVIMRC<cr>
 nnoremap <leader>nt :NERDTreeToggle<CR>
 
