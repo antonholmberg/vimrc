@@ -1,6 +1,7 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 Plug 'morhetz/gruvbox'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
@@ -13,7 +14,7 @@ Plug 'mattn/emmet-vim'
 Plug 'luochen1990/rainbow'
 let g:rainbow_active = 1
 
-Plug 'airblade/vim-gitgutter'
+Plug 'metakirby5/codi.vim'
 
 Plug 'editorconfig/editorconfig-vim'
 
