@@ -13,6 +13,7 @@ Plug 'posva/vim-vue'
 Plug 'mattn/emmet-vim'
 Plug 'luochen1990/rainbow'
 Plug 'ekalinin/Dockerfile.vim'
+Plug 'junegunn/goyo.vim'
 let g:rainbow_active = 1
 
 Plug 'metakirby5/codi.vim'
