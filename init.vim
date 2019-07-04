@@ -74,6 +74,7 @@ nnoremap <leader>nt :NERDTreeToggle<CR>
 " ---------
 
 set hidden
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
