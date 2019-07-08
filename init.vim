@@ -1,12 +1,9 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'morhetz/gruvbox'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'leafgarland/typescript-vim'
 Plug 'ianks/vim-tsx'
+Plug 'leafgarland/typescript-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'arcticicestudio/nord-vim'
 Plug 'posva/vim-vue'
@@ -15,8 +12,6 @@ Plug 'luochen1990/rainbow'
 let g:rainbow_active = 1
 
 Plug 'ekalinin/Dockerfile.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'roxma/nvim-yarp'
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
@@ -25,9 +20,6 @@ Plug 'autozimu/LanguageClient-neovim', {
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-ultisnips'
-
-Plug 'metakirby5/codi.vim'
-
 Plug 'editorconfig/editorconfig-vim'
 
 Plug 'fatih/vim-go'
