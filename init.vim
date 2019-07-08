@@ -19,7 +19,11 @@ Plug 'autozimu/LanguageClient-neovim', {
 " assuming you're using vim-plug: https://github.com/junegunn/vim-plug
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-cssomni'
 Plug 'ncm2/ncm2-ultisnips'
+Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-vim'
+Plug 'ncm2/ncm2-path'
 Plug 'editorconfig/editorconfig-vim'
 
 Plug 'fatih/vim-go'
@@ -89,7 +93,6 @@ let g:LanguageClient_serverCommands = {
     \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
     \ 'typescript': ['typescript-language-server', '--stdio'],
     \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
-    \ 'python': ['/usr/local/bin/pyls'],
     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
     \ }
 let g:LanguageClient_diagnosticsEnable = 0
