@@ -24,6 +24,7 @@ Plug 'ncm2/ncm2-ultisnips'
 Plug 'ncm2/ncm2-jedi'
 Plug 'ncm2/ncm2-vim'
 Plug 'ncm2/ncm2-path'
+Plug 'Shougo/neco-vim'
 Plug 'editorconfig/editorconfig-vim'
 
 Plug 'fatih/vim-go'
@@ -61,11 +62,13 @@ set background=dark
 color nord
 
 let g:ale_linters = {
+            \ 'haskell': ['hie'],
             \'cpp': ['clangtidy', 'clangcheck'],
             \'javascript': ['eslint'],
             \'python': ['flake8']
             \}
 let g:ale_fixers = {
+            \'haskell': ['hfmt'],
             \'*': ['remove_trailing_lines', 'trim_whitespace'],
             \'cpp': ['clangtidy'],
             \'typescript': ['prettier', 'eslint'],
@@ -87,8 +90,13 @@ nnoremap <leader>nt :NERDTreeToggle<CR>
 set hidden
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
+let g:LanguageClient_rootMarkers = {
+            \ 'haskell': ['*.cabal', 'stack.yaml']
+            \ }
+
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+    \ 'haskell': ['hie-wrapper'],
     \ 'javascript': ['typescript-language-server', '--stdio'],
     \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
     \ 'typescript': ['typescript-language-server', '--stdio'],
@@ -151,64 +159,69 @@ nnoremap <c-p> :FZF<cr>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/flow-typed/*
 
 au FileType javascript call SetUpJavascript()
-function! SetUpJavascript()
+fun! SetUpJavascript()
     setlocal sw=2 sts=2 ts=2 et si
-endfunction
+endfun
 
 au FileType typescript call SetUpTypescript()
-function! SetUpTypescript()
+fun! SetUpTypescript()
     setlocal sw=2 sts=2 ts=2 et si
-endfunction
+endfun
 
 au FileType vim call SetUpVimScript()
-function! SetUpVimScript()
+fun! SetUpVimScript()
     setlocal sw=4 sts=4 ts=2 et si
-endfunction
+endfun
 
 au FileType json call SetUpJson()
-function! SetUpJson()
+fun! SetUpJson()
     setlocal sw=2 sts=2 ts=2 et si
-endfunction
+endfun
 
 au FileType yaml call SetUpYaml()
-function! SetUpYaml()
+fun! SetUpYaml()
     setlocal sw=2 sts=2 ts=2 et si
-endfunction
+endfun
 
 au FileType c call SetUpC()
-function! SetUpC()
+fun! SetUpC()
     setlocal sw=4 sts=4 ts=4 et si
-endfunction
+endfun
 
 au FileType rust call SetUpRust()
-function! SetUpRust()
+fun! SetUpRust()
     setlocal sw=2 sts=2 ts=2 et si
-endfunction
+endfun
 
 au FileType css call SetUpCss()
-function! SetUpCss()
+fun! SetUpCss()
     setlocal sw=2 sts=2 ts=2 et si
-endfunction
+endfun
 
 au FileType html call SetUpHtml()
-function! SetUpHtml()
+fun! SetUpHtml()
     setlocal sw=2 sts=2 ts=2 et si
-endfunction
+endfun
 
 au FileType sh call SetUpShell()
-function! SetUpShell()
+fun! SetUpShell()
     setlocal sw=4 sts=4 ts=4 et si
-endfunction'
+endfun'
 
 au FileType go call SetUpGo()
-function! SetUpGo()
+fun! SetUpGo()
     setlocal sw=4 sts=4 ts=4 si
-endfunction
+endfun
+
+au FileType haskell call SetUpHaskell()
+fun! SetUpHaskell()
+    setlocal sw=2 sts=2 ts=2 si
+endfun
 
 au FileType cpp call SetUpC()
 au FileType hpp call SetUpC()
 au FileType c call SetUpC()
 au FileType h call SetUpC()
-function! SetUpC()
+fun! SetUpC()
     setlocal sw=4 sts=4 ts=4 si et
-endfunction
+endfun
