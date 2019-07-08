@@ -12,6 +12,8 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'posva/vim-vue'
 Plug 'mattn/emmet-vim'
 Plug 'luochen1990/rainbow'
+let g:rainbow_active = 1
+
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'roxma/nvim-yarp'
@@ -19,16 +21,10 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-let g:python3_host_prog = 'python'
-let g:deoplete#enable_at_startup = 1
-let g:rainbow_active = 1
+" assuming you're using vim-plug: https://github.com/junegunn/vim-plug
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-ultisnips'
 
 Plug 'metakirby5/codi.vim'
 
@@ -36,6 +32,7 @@ Plug 'editorconfig/editorconfig-vim'
 
 Plug 'fatih/vim-go'
 let g:go_def_mapping_enabled = 0
+
 Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -52,17 +49,17 @@ call plug#end()
 filetype plugin indent on
 
 if has("gui_running")
-  if has("gui_gtk2")
-    set guifont=Inconsolata\ 12
-  elseif has("gui_macvim")
-    set guifont=Menlo\ Regular:h14
-  elseif has("gui_win32")
-    set guifont=Consolas:h11:cANSI
-  endif
+    set guioptions -=m
+    set guioptions -=T
+    if has("gui_gtk2")
+        set guifont=Inconsolata\ 12
+    elseif has("gui_macvim")
+        set guifont=Menlo\ Regular:h14
+    elseif has("gui_win32")
+        set guifont=Consolas:h11:cANSI
+    endif
 endif
 
-set guioptions -=m
-set guioptions -=T
 
 set background=dark
 color nord
@@ -106,37 +103,36 @@ let g:LanguageClient_serverCommands = {
 let g:LanguageClient_diagnosticsEnable = 0
 
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
-" IMPORTANT: :help Ncm2PopupOpen for more information
-set completeopt=noinsert,menuone,noselect
-
-" suppress the annoying 'match x of y', 'The only match' and 'Pattern not
-" found' messages
-set shortmess+=c
-
-" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-inoremap <c-c> <ESC>
-
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-
-
-" c-j c-k for moving in snippet
-let g:UltiSnipsExpandTrigger	= "<c-j>"
-let g:UltiSnipsJumpForwardTrigger	= "<c-j>"
-let g:UltiSnipsJumpBackwardTrigger	= "<c-k>"
-let g:UltiSnipsRemoveSelectModeMappings = 0
-
-" Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"<Paste>
-
 " ----------
 " /LSP Stuff
 " ----------
+
+augroup auto_complete
+  autocmd!
+  autocmd BufEnter * call ncm2#enable_for_buffer()
+  autocmd TextChangedI * call ncm2#auto_trigger()
+augroup END
+
+set completeopt=noinsert,menuone,noselect
+set shortmess+=c
+
+inoremap <expr> <CR> pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
+
+
+" Press enter key to trigger snippet expansion
+inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
+
+" c-j c-k for moving in snippet
+let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
+let g:UltiSnipsJumpForwardTrigger = '<c-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
+let g:UltiSnipsRemoveSelectModeMappings = 0
 
 " -------
 " Rg stuff
