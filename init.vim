@@ -23,6 +23,8 @@ Plug 'fatih/vim-go'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'davidhalter/jedi-vim'
+let g:jedi#popup_on_dot = 0
 
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
@@ -115,22 +117,35 @@ augroup javascript
     autocmd FileType javascript setlocal smartindent
 augroup END
 
+augroup python
+    autocmd!
+    autocmd FileType python setlocal shiftwidth=4
+    autocmd FileType python setlocal softtabstop=4
+    autocmd FileType python setlocal tabstop=4
+    autocmd FileType python setlocal smartindent
+    autocmd FileType python setlocal expandtab
+    if executable('autopep8')
+        autocmd FileType python nnoremap <silent> <buffer> <localleader>f :!autopep8 -i -a %<cr>
+    endif
+		if executable('pylint')
+				autocmd FileType python nnoremap <localleader>l :new <bar> 0read ! pylint #<cr>
+		endif
+augroup END
+
 augroup typescript
     autocmd!
     if executable('typescript-language-server')
         autocmd FileType typescript,typescript.tsx setlocal omnifunc=lsp#complete
     endif
-    autocmd FileType typescript,typescript.tsx nnoremap <silent> <buffer> <leader>f :!prettier --write %<cr>
+    if executable('prettier')
+        autocmd FileType typescript,typescript.tsx nnoremap <silent> <buffer> <localleader>f :!prettier --write %<cr>
+    endif
     autocmd FileType typescript,typescript.tsx setlocal shiftwidth=2
     autocmd FileType typescript,typescript.tsx setlocal softtabstop=2
     autocmd FileType typescript,typescript.tsx setlocal tabstop=2
     autocmd FileType typescript,typescript.tsx setlocal smartindent
 augroup END
 
-au FileType vim call SetUpVimScript()
-fun! SetUpVimScript()
-    setlocal sw=4 sts=4 ts=2 et si
-endfun
 augroup vimscript
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
