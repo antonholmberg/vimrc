@@ -10,7 +10,10 @@ Plug 'posva/vim-vue'
 Plug 'mattn/emmet-vim'
 Plug 'luochen1990/rainbow'
 Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 let g:rainbow_active = 1
 
 Plug 'ekalinin/Dockerfile.vim'
@@ -69,34 +72,23 @@ nnoremap <leader>bp :bp<cr>
 " }}}
 
 " LSP configuration {{{
-let g:lsp_diagnostics_enabled=0
-augroup lsp
-    autocmd!
-    if executable('typescript-language-server')
-        autocmd User lsp_setup call lsp#register_server({
-                    \ 'name': 'typescript-language-server',
-                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-                    \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-                    \ 'whitelist': ['typescript', 'typescript.tsx'],
-                    \ })
-    endif
-    if executable('typescript-language-server')
-        au User lsp_setup call lsp#register_server({
-                    \ 'name': 'javascript support using typescript-language-server',
-                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-                    \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
-                    \ 'whitelist': ['javascript', 'javascript.jsx'],
-                    \ })
-    endif
-    if executable('rls')
-        au User lsp_setup call lsp#register_server({
-                    \ 'name': 'rls',
-                    \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-                    \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-                    \ 'whitelist': ['rust'],
-                    \ })
-    endif
-augroup END
+" Required for operations modifying multiple buffers like rename.
+set hidden
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['typescript-language-server', '--stdio'],
+    \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
+    \ 'python': ['pyls'],
+    \ }
+
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+let g:LanguageClient_diagnosticsEnable = 0
+
 " }}}
 
 " fzf configuration {{{
@@ -109,7 +101,7 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/flow-typed/*
 augroup javascript
     autocmd!
     if executable('typescript-language-server')
-        autocmd FileType javascript setlocal omnifunc=lsp#complete
+        autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
     endif
     autocmd FileType javascript setlocal shiftwidth=2
     autocmd FileType javascript setlocal softtabstop=2
@@ -135,7 +127,7 @@ augroup END
 augroup typescript
     autocmd!
     if executable('typescript-language-server')
-        autocmd FileType typescript,typescript.tsx setlocal omnifunc=lsp#complete
+        autocmd FileType typescript,typescript.tsx setlocal omnifunc=LanguageClient#complete
     endif
     if executable('prettier')
         autocmd FileType typescript,typescript.tsx nnoremap <silent> <buffer> <localleader>f :!prettier --write %<cr>
@@ -182,7 +174,7 @@ augroup END
 augroup rust
     autocmd!
     if executable('rls')
-        autocmd FileType rust setlocal omnifunc=lsp#complete
+        autocmd FileType rust setlocal omnifunc=LanguageClient#complete
     endif
     autocmd FileType rust setlocal shiftwidth=2
     autocmd FileType rust setlocal softtabstop=2
