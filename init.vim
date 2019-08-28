@@ -31,8 +31,9 @@ let g:jedi#popup_on_dot = 0
 
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
 
 call plug#end()
 " }}}
