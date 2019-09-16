@@ -10,15 +10,12 @@ Plug 'posva/vim-vue'
 Plug 'mattn/emmet-vim'
 Plug 'luochen1990/rainbow'
 Plug 'prabirshrestha/async.vim'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
+Plug 'dense-analysis/ale'
 let g:rainbow_active = 1
 
 Plug 'ekalinin/Dockerfile.vim'
 " assuming you're using vim-plug: https://github.com/junegunn/vim-plug
-Plug 'Shougo/neco-vim'
 Plug 'editorconfig/editorconfig-vim'
 
 Plug 'fatih/vim-go'
@@ -26,14 +23,9 @@ Plug 'fatih/vim-go'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'davidhalter/jedi-vim'
-let g:jedi#popup_on_dot = 0
 
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
+Plug 'honza/vim-snippets'
 
 call plug#end()
 " }}}
@@ -72,38 +64,114 @@ nnoremap <leader>bn :bn<cr>
 nnoremap <leader>bp :bp<cr>
 " }}}
 
-" LSP configuration {{{
-" Required for operations modifying multiple buffers like rename.
-set hidden
-
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['typescript-language-server', '--stdio'],
-    \ 'javascript.jsx': ['typescript-language-server', '--stdio'],
-    \ 'python': ['pyls'],
-    \ }
-
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-let g:LanguageClient_diagnosticsEnable = 0
-
-" }}}
-
 " fzf configuration {{{
 let $FZF_DEFAULT_COMMAND="fd --type f"
 nnoremap <c-p> :FZF<cr>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/flow-typed/*
 " }}}
 
+" ALE config {{{
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+						\'*': ['trim_whitespace'],
+						\'python': ['autopep8', 'isort']
+						\}
+" }}}
+
+" CoC configuration {{{
+" if hidden is not set, TextEdit might fail.
+set hidden
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" Better display for messages
+set cmdheight=1
+
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" }}}
+
 " Language specific configurations {{{
 augroup javascript
     autocmd!
-    if executable('typescript-language-server')
-        autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
-    endif
     autocmd FileType javascript setlocal shiftwidth=2
     autocmd FileType javascript setlocal softtabstop=2
     autocmd FileType javascript setlocal tabstop=2
@@ -117,22 +185,10 @@ augroup python
     autocmd FileType python setlocal tabstop=4
     autocmd FileType python setlocal smartindent
     autocmd FileType python setlocal expandtab
-    if executable('autopep8')
-        autocmd FileType python nnoremap <silent> <buffer> <localleader>f :!autopep8 -i -a %<cr>
-    endif
-		if executable('pylint')
-				autocmd FileType python nnoremap <localleader>l :new <bar> 0read ! pylint #<cr>
-		endif
 augroup END
 
 augroup typescript
     autocmd!
-    if executable('typescript-language-server')
-        autocmd FileType typescript,typescript.tsx setlocal omnifunc=LanguageClient#complete
-    endif
-    if executable('prettier')
-        autocmd FileType typescript,typescript.tsx nnoremap <silent> <buffer> <localleader>f :!prettier --write %<cr>
-    endif
     autocmd FileType typescript,typescript.tsx setlocal shiftwidth=2
     autocmd FileType typescript,typescript.tsx setlocal softtabstop=2
     autocmd FileType typescript,typescript.tsx setlocal tabstop=2
@@ -174,9 +230,6 @@ augroup END
 
 augroup rust
     autocmd!
-    if executable('rls')
-        autocmd FileType rust setlocal omnifunc=LanguageClient#complete
-    endif
     autocmd FileType rust setlocal shiftwidth=2
     autocmd FileType rust setlocal softtabstop=2
     autocmd FileType rust setlocal tabstop=2
