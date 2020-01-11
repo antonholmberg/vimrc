@@ -12,6 +12,7 @@ Plug 'luochen1990/rainbow'
 Plug 'prabirshrestha/async.vim'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
 Plug 'dense-analysis/ale'
+Plug 'cespare/vim-toml'
 let g:rainbow_active = 1
 
 Plug 'ekalinin/Dockerfile.vim'
@@ -74,7 +75,8 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/flow-typed/*
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
 						\'*': ['trim_whitespace'],
-						\'python': ['autopep8', 'isort']
+						\'python': ['autopep8', 'isort'],
+						\'haskell': ['brittany']
 						\}
 " }}}
 
@@ -269,9 +271,20 @@ augroup golang
 augroup END
 
 augroup haskell
+		autocmd!
     autocmd FileType haskell setlocal shiftwidth=2
     autocmd FileType haskell setlocal softtabstop=2
     autocmd FileType haskell setlocal tabstop=2
     autocmd FileType haskell setlocal smartindent
+		autocmd FileType haskell setlocal expandtab
 augroup END
+
+augroup toml
+		autocmd!
+    autocmd FileType toml setlocal shiftwidth=2
+    autocmd FileType toml setlocal softtabstop=2
+    autocmd FileType toml setlocal tabstop=2
+    autocmd FileType toml setlocal smartindent
+augroup END
+
 " }}}
