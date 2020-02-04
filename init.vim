@@ -72,12 +72,18 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/flow-typed/*
 " }}}
 
 " ALE config {{{
+
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
-						\'*': ['trim_whitespace'],
-						\'python': ['autopep8', 'isort'],
-						\'haskell': ['brittany']
+						\'python': ['autopep8', 'isort', 'trim_whitespace'],
+						\'javascript': ['prettier', 'trim_whitespace'],
+						\'cpp': ['clangtidy', 'trim_whitespace'],
+						\'haskell': ['brittany', 'trim_whitespace']
 						\}
+let g:ale_linters = {
+						\'cpp': ['clangcheck'],
+						\}
+
 " }}}
 
 " CoC configuration {{{
@@ -174,10 +180,10 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " Language specific configurations {{{
 augroup javascript
     autocmd!
-    autocmd FileType javascript setlocal shiftwidth=2
-    autocmd FileType javascript setlocal softtabstop=2
-    autocmd FileType javascript setlocal tabstop=2
-    autocmd FileType javascript setlocal smartindent
+    autocmd FileType javascript,javascript.jsx setlocal shiftwidth=2
+    autocmd FileType javascript,javascript.jsx setlocal softtabstop=2
+    autocmd FileType javascript,javascript.jsx setlocal tabstop=2
+    autocmd FileType javascript,javascript.jsx setlocal autoindent
 augroup END
 
 augroup python
